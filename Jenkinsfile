@@ -1,5 +1,5 @@
 pipeline {
-  agent { {any}}
+  agent any
   stages {
     stage('Static Code Analysis') { // Get code
       steps {
