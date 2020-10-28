@@ -10,7 +10,7 @@ pipeline {
 
          // get code from our Git repository
 
-         git 'https://github.com/premalathasubramaniam/DevOps-Demo-WebApp.git'
+         git 'https://github.com/chenchu84/DevOps-Demo-WebApp.git'
 
        }
 
