@@ -10,9 +10,10 @@ pipeline {
     stage('Static Code Analysis') { // Get code
       steps {
         // get code from our Git repository
-        def scannerhome = tool 'sonarqubescanner';
+        def scannerhome = tool 'sonarqubescanner';}
+      steps{
         withSonarQubeEnv(credentialsId: 'sonar', installationName: 'sonarqube') {
-          sh """${scannerhome}/bin/sonar-runner -D sonar.login=admin -D sonar.password=admin"""
+          sh """${scannerhome}/bin/sonar-runner -D sonar.login=admin -D sonar.password=admin """
         }
       }
     }
