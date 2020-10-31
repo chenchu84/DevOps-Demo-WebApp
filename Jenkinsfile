@@ -12,7 +12,7 @@ pipeline {
         // get code from our Git repository
         def scannerhome = tool 'sonarqubescanner';
         withSonarQubeEnv(credentialsId: 'sonar', installationName: 'sonarqube') {
-            sh """$(scannerhome)/bin/sonar-runner -D sonar.login=admin -D sonar.password=admin"""
+          sh """${scannerhome}/bin/sonar-runner -D sonar.login=admin -D sonar.password=admin"""
         }
       }
     }
