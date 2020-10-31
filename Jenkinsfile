@@ -7,15 +7,15 @@ pipeline {
         git 'https://github.com/chenchu84/DevOps-Demo-WebApp.git'
       }
     }
-    stage('Static Code Analysis') { // Get code
+    stage('Static Code Analysis') 
+    {
       steps {
-        // get code from our Git repository
-        def scannerhome = tool 'sonarqubescanner';}
-      steps{
-        withSonarQubeEnv(credentialsId: 'sonar', installationName: 'sonarqube') {
+        def scannerhome = tool 'sonarqubescanner' ;
+        withSonarQubeEnv(credentialsId: 'sonar', installationName: 'sonarqube') 
+        {
           sh """${scannerhome}/bin/sonar-runner -D sonar.login=admin -D sonar.password=admin """
         }
-      }
+            }
     }
     stage('build') {
       steps {
