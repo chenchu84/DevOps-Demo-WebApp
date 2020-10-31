@@ -1,10 +1,19 @@
 pipeline {
   agent any
   stages {
-    stage('Static Code Analysis') { // Get code
+    stage('checkout SCM') { // Get code
       steps {
         // get code from our Git repository
         git 'https://github.com/chenchu84/DevOps-Demo-WebApp.git'
+      }
+    }
+    stage('Static Code Analysis') { // Get code
+      steps {
+        // get code from our Git repository
+        def scannerhome = tool 'sonarqubescanner';
+        withSonarQubeEnv(credentialsId: 'sonar', installationName: 'sonarqube') {
+    // some block
+        }
       }
     }
     stage('build') {
