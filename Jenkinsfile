@@ -21,7 +21,7 @@ pipeline {
             
             steps {
                 withSonarQubeEnv(credentialsId: 'sonar', installationName: 'sonarqube') {
-                sh 'mvn sonar:sonar -D sonar.login=admin -D sonar.password=admin'
+                sh 'mvn clean pakcage sonar:sonar -D sonar.login=admin -D sonar.password=admin'
                 }
             }
         }
