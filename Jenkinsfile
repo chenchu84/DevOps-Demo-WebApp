@@ -1,57 +1,97 @@
 pipeline {
-  agent any
-  stages {
-    stage('checkout SCM') { // Get code
-      steps {
-        // get code from our Git repository
-        git 'https://github.com/chenchu84/DevOps-Demo-WebApp.git'
-      }
+    
+    agent any
+    
+    tools {
+        maven 'Maven3'
     }
-    stage('Static Code Analysis') 
-    {
-      steps {
-        def scannerhome = tool 'sonarqubescanner' ;
-        withSonarQubeEnv(credentialsId: 'sonar', installationName: 'sonarqube') 
-        {
-          sh """${scannerhome}/bin/sonar-runner -D sonar.login=admin -D sonar.password=admin """
-        }
+    
+    
+    stages {
+        
+        stage ('Checkout'){
+            
+            steps{
+            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/chenchu84/DevOps-Demo-WebApp.git']]])
             }
+            
+        }
+        
+        stage ('Build') {
+            
+            steps {
+                    sh 'mvn clean install'
+            }
+        }
+        
+        
+         stage ('DeployTest') {
+            
+            steps {
+                    
+                    deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://3.23.98.14:8080')], contextPath: 'QAWebapp', war: '**/*.war'
+            }
+        }
+        
+        stage ('jFrogserver') {
+            
+            steps {
+                
+                rtServer (
+                        id: 'artifactory',
+                        url: 'https://devopsscriptedpipeline.jfrog.io/artifactory',
+                        // If you're using username and password:
+                        username: 'deploy',
+                        password: 'Sai@feb2202',
+                        // If Jenkins is configured to use an http proxy, you can bypass the proxy when using this Artifactory server:
+                        bypassProxy: true,
+                        // Configure the connection timeout (in seconds).
+                        // The default value (if not configured) is 300 seconds:
+                        timeout: 300
+                )
+                    
+             }
+        }
+        
+        stage ('jFrogserverupload') {
+            
+            steps {
+                
+                rtUpload (
+    serverId: 'artifactory',
+    spec: '''{
+          "files": [
+            {
+              "pattern": "**/*.war",
+              "target": "example-repo-local"
+            }
+         ]
+    }'''
+ 
+   )
+                    
+             }
+        }
+        
+         stage ('DeployProd') {
+            
+            steps {
+                    
+                    deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://3.137.192.69:8080')], contextPath: 'ProdWebapp', war: '**/*.war'
+            }
+        }
+        
+        stage ('SlackNotificationProd') {
+            
+            steps {
+                
+                slackSend channel: 'alerts', message: 'Prod Build Success', teamDomain: 'kv-workspacegroup', tokenCredentialId: 'slack2'
+                    
+             }
+        }
+        
+       
+        
     }
-    stage('build') {
-      steps {
-      //sh 'mvn --version'
-      git 'https://github.com/chenchu84/DevOps-Demo-WebApp.git'
-      }
-    }
-    stage('UI Test') {
-      steps {
-      git 'https://github.com/chenchu84/DevOps-Demo-WebApp.git'
-      }
-    }
-    stage('Performance Test') {
-      steps {
-      git 'https://github.com/chenchu84/DevOps-Demo-WebApp.git'
-      }
-    }
-    stage('Deploy To QA') {
-      steps {
-      git 'https://github.com/chenchu84/DevOps-Demo-WebApp.git'
-      }
-    }
-    stage('Store Artifact') {
-      steps {
-      git 'https://github.com/chenchu84/DevOps-Demo-WebApp.git'
-      }
-    }
-    stage('Deploy To Prod') {
-      steps {
-      git 'https://github.com/chenchu84/DevOps-Demo-WebApp.git'
-      }
-    }
-    stage('Sanity Test') {
-      steps {
-      git 'https://github.com/chenchu84/DevOps-Demo-WebApp.git'
-      }
-    }
-  }
+    
 }
