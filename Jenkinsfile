@@ -66,7 +66,8 @@ pipeline {
               "target": "example-repo-local"
             }
          ]
-    }'''
+    }''',
+                    buildName: 'descriptivepipeline1'
  
    )
                     
