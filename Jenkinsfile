@@ -52,6 +52,8 @@ pipeline {
                     
              }
             
+            stage ('jFrogserverupload') {
+            
             steps {
                 
                 rtUpload (
@@ -70,8 +72,7 @@ pipeline {
                     
              }
         }
-        
-       
+     
         
          stage ('DeployProd') {
             
