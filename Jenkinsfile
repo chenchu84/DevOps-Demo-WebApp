@@ -29,7 +29,7 @@ pipeline {
             
             steps {
                     
-                    deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://3.23.98.14:8080')], contextPath: 'QAWebapp', war: '**/*.war'
+                    deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://18.224.14.147:8080')], contextPath: 'QAWebapp', war: '**/*.war'
             }
         }
         
@@ -41,7 +41,7 @@ pipeline {
                         id: 'artifactory',
                         url: 'https://devopsscriptedpipeline.jfrog.io/artifactory',
                         // If you're using username and password:
-                        username: 'deploy',
+                        username: 'jenkins',
                         password: 'Sai@feb2202',
                         // If Jenkins is configured to use an http proxy, you can bypass the proxy when using this Artifactory server:
                         bypassProxy: true,
@@ -63,7 +63,7 @@ pipeline {
           "files": [
             {
               "pattern": "**/*.war",
-              "target": "example-repo-local/"
+              "target": "jenkins/WEBPOC/AVNCommunication/1.0/"
             }
          ]
     }''',
@@ -80,7 +80,7 @@ pipeline {
             
             steps {
                     
-                    deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://3.137.192.69:8080')], contextPath: 'ProdWebapp', war: '**/*.war'
+                    deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://3.16.131.173:8080')], contextPath: 'ProdWebapp', war: '**/*.war'
             }
         }
         
