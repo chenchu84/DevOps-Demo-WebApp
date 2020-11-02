@@ -51,9 +51,6 @@ pipeline {
                 )
                     
              }
-        }
-        
-        stage ('jFrogserverupload') {
             
             steps {
                 
@@ -73,6 +70,8 @@ pipeline {
                     
              }
         }
+        
+       
         
          stage ('DeployProd') {
             
