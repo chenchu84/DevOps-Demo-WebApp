@@ -63,11 +63,12 @@ pipeline {
           "files": [
             {
               "pattern": "**/*.war",
-              "target": "example-repo-local"
+              "target": "example-repo-local/"
             }
          ]
     }''',
-                    buildName: 'descriptivepipeline1'
+                    buildName: 'descriptivepipeline1',
+                    //buildNumber: '42'
  
    )
                     
