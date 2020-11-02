@@ -17,6 +17,15 @@ pipeline {
             
         }
         
+         stage ('Code Analysis') {
+            
+            steps {
+                withSonarQubeEnv(credentialsId: 'sonar', installationName: 'sonarqube') {
+                sh 'mvn sonar:sonar -D sonar.login=admin -D sonar.password=admin'
+                }
+            }
+        }
+        
         stage ('Build') {
             
             steps {
