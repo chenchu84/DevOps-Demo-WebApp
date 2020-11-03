@@ -84,6 +84,26 @@ pipeline {
              }
         }
      
+         stage ('testbuild') {
+            
+            steps {
+                
+                    sh 'mvn clean install -f functionaltest/pom.xml'
+            
+                 }
+        }
+    
+    stage('unittest'){
+        steps{
+            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\functionaltest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
+        }
+    }
+        
+    stage('performance-test'){
+        steps{
+            blazeMeterTest credentialsId: 'blazemeter', testId: '8656444.taurus', workspaceId: '683047'
+        }
+    }
         
          stage ('DeployProd') {
             
@@ -92,6 +112,21 @@ pipeline {
                     deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://35.238.76.207:8080')], contextPath: 'ProdWebapp', war: '**/*.war'
             }
         }
+        
+        stage ('ProdBuild') {
+            
+            steps {
+                
+                    sh 'mvn clean install -f Acceptancetest/pom.xml'
+            
+                 }
+        }
+    
+    stage('sanity-test'){
+        steps{
+            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\Acceptancetest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
+        }
+    }
         
         stage ('SlackNotificationProd') {
             
