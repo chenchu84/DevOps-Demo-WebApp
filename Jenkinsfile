@@ -17,6 +17,13 @@ pipeline {
             
         }
         
+        stage ('Build') {
+            
+            steps {
+                    sh 'mvn clean install'
+            }
+        }
+        
          stage ('Code Analysis') {
             
             steps {
@@ -26,12 +33,7 @@ pipeline {
             }
         }
         
-        stage ('Build') {
-            
-            steps {
-                    sh 'mvn clean install'
-            }
-        }
+        
         
         
          stage ('DeployTest') {
