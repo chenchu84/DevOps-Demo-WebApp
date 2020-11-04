@@ -145,7 +145,7 @@ pipeline {
                  }
         }
     
-    stage('sanity-test'){
+    stage('SanityTest'){
         steps{
             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\Acceptancetest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
         }
