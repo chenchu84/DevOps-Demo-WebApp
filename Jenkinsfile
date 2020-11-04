@@ -37,7 +37,7 @@ pipeline {
             
             steps {
                     
-                    deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://35.188.158.168:8080')], contextPath: 'QAWebapp', war: '**/*.war'
+                    deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://34.70.102.113:8080')], contextPath: 'QAWebapp', war: '**/*.war'
             }
         }
         
@@ -115,7 +115,7 @@ pipeline {
             
             steps {
                     
-                    deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://35.238.76.207:8080')], contextPath: 'ProdWebapp', war: '**/*.war'
+                    deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://34.67.165.183:8080')], contextPath: 'ProdWebapp', war: '**/*.war'
             }
         }
         
