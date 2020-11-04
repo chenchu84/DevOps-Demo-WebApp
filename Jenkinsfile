@@ -32,6 +32,13 @@ pipeline {
                     sh 'mvn clean install'
             }
             
+             post {
+                 always {
+                     jiraSendBuildInfo branch: 'https://tcs-devops-case-study.atlassian.net/browse/DC-1', site: 'tcs-devops-case-study.atlassian.net'
+                 }
+            
+            }
+            
             }
         
          stage ('JiraNotification') {
