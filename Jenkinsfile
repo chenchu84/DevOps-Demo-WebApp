@@ -20,7 +20,7 @@ pipeline {
         stage ('StaticCodeAnalysis') {
             
             steps {
-                withSonarQubeEnv(credentialsId: 'sonar', installationName: 'sonarqube') {
+                withSonarQubeEnv(credentialsId: 'sonar') {
                 sh 'mvn sonar:sonar -D sonar.login=admin -D sonar.password=admin'
                 }
             }
@@ -138,7 +138,7 @@ pipeline {
             
             steps {
                 
-                slackSend channel: 'alerts', message: 'Prod Build Success', teamDomain: 'kv-workspacegroup', tokenCredentialId: 'slack2'
+                slackSend channel: 'alerts', message: 'Prod Deployment Success', teamDomain: 'kv-workspacegroup', tokenCredentialId: 'SlackNotifications'
                     
              }
         }
