@@ -31,13 +31,22 @@ pipeline {
             steps {
                     sh 'mvn clean install'
             }
-        }
+            
+            }
+        
+         stage ('JiraNotification') {
+            
+            steps {
+                   jiraComment body: 'Build is Success', issueKey: 'DC-1'
+            }
+            }
+        
         
         stage ('DeployTest') {
             
             steps {
                     
-                  deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://34.70.102.113:8080')], contextPath: 'QAWebapp', war: '**/*.war'
+                  deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://35.192.223.169:8080')], contextPath: 'QAWebapp', war: '**/*.war'
             }
         }
         
@@ -116,7 +125,7 @@ pipeline {
             
             steps {
                     
-                    deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://34.67.165.183:8080')], contextPath: 'ProdWebapp', war: '**/*.war'
+                    deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://35.192.223.169:8080')], contextPath: 'ProdWebapp', war: '**/*.war'
             }
         }
         
