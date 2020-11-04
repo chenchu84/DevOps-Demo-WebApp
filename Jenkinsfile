@@ -60,7 +60,7 @@ pipeline {
         //stage ('ArtifactoryBuild') {
             
           //  steps {
-                    sh 'mvn package'
+          //          sh 'mvn package'
            // }
        // }
         
