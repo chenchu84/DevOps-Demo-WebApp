@@ -17,14 +17,7 @@ pipeline {
             
         }
         
-        stage ('Build') {
-            
-            steps {
-                    sh 'mvn clean install'
-            }
-        }
-        
-         stage ('Code Analysis') {
+        stage ('StaticCodeAnalysis') {
             
             steps {
                 withSonarQubeEnv(credentialsId: 'sonar', installationName: 'sonarqube') {
@@ -33,14 +26,25 @@ pipeline {
             }
         }
         
+        stage ('Build') {
+            
+            steps {
+                    sh 'mvn clean install'
+            }
+        }
         
-        
-        
-         stage ('DeployTest') {
+        stage ('DeployTest') {
             
             steps {
                     
                     deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://35.188.158.168:8080')], contextPath: 'QAWebapp', war: '**/*.war'
+            }
+        }
+        
+        stage ('SonarBuild') {
+            
+            steps {
+                    sh 'mvn package'
             }
         }
         
@@ -90,7 +94,7 @@ pipeline {
             
             steps {
                 
-                    sh 'mvn clean install -f functionaltest/pom.xml'
+                    sh 'mvn test -f functionaltest/pom.xml'
             
                  }
         }
