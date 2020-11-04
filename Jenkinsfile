@@ -57,6 +57,15 @@ pipeline {
             }
         }
         
+        stage ('SlackNotificationTest') {
+            
+            steps {
+                
+                slackSend channel: 'alerts', message: 'Test Deployment Success', teamDomain: 'friends-dover', tokenCredentialId: 'slackdevops'
+                    
+             }
+        }
+        
         //stage ('ArtifactoryBuild') {
             
           //  steps {
@@ -155,7 +164,7 @@ pipeline {
             
             steps {
                 
-                slackSend channel: 'alerts', message: 'Prod Deployment Success', teamDomain: 'kv-workspacegroup', tokenCredentialId: 'SlackNotifications'
+                slackSend channel: 'alerts', message: 'Prod Deployment Success', teamDomain: 'friends-dover', tokenCredentialId: 'slackdevops'
                     
              }
         }
