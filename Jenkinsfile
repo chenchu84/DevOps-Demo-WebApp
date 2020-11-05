@@ -61,18 +61,19 @@ pipeline {
                  always {
                      jiraSendDeploymentInfo environmentId: 'Test', environmentName: 'Test Environement', environmentType: 'Test', serviceIds: ['http://35.192.223.169:8080/QAWebapp'], site: 'tcs-devops-case-study.atlassian.net', state: 'successful'
                     jiraComment body: 'Test Deployment Successful', issueKey: 'DC-1'
+                     slackSend channel: 'alerts', message: 'Test Deployment Success', teamDomain: 'friends-dover', tokenCredentialId: 'slackdevops'
                  }
              }
         }
         
-        stage ('SlackNotificationTest') {
+       // stage ('SlackNotificationTest') {
             
-            steps {
+         //   steps {
                 
-                slackSend channel: 'alerts', message: 'Test Deployment Success', teamDomain: 'friends-dover', tokenCredentialId: 'slackdevops'
+           //     slackSend channel: 'alerts', message: 'Test Deployment Success', teamDomain: 'friends-dover', tokenCredentialId: 'slackdevops'
                     
-             }
-        }
+            // }
+       // }
         
         //stage ('ArtifactoryBuild') {
             
@@ -123,17 +124,18 @@ pipeline {
              }
         }
      
-         stage ('testbuild') {
+      //   stage ('testbuild') {
             
-            steps {
+        //    steps {
                 
-                    sh 'mvn test -f functionaltest/pom.xml'
+          //          sh 'mvn test -f functionaltest/pom.xml'
             
-                 }
-        }
+            //     }
+        //}
     
-    stage('unittest'){
+    stage('UnitTest'){
         steps{
+            sh 'mvn test -f functionaltest/pom.xml'
             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\functionaltest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
         }
     }
@@ -155,35 +157,37 @@ pipeline {
               post {
                  always {
                      jiraSendDeploymentInfo environmentId: 'Prod', environmentName: 'prod', environmentType: 'production', serviceIds: ['http://34.122.114.228:8080/ProdWebapp'], site: 'tcs-devops-case-study.atlassian.net', state: 'successful'
-                    jiraComment body: 'Production Deployment Successful', issueKey: 'DC-1'
+                     jiraComment body: 'Production Deployment Successful', issueKey: 'DC-1'
+                     slackSend channel: 'alerts', message: 'Prod Deployment Success', teamDomain: 'friends-dover', tokenCredentialId: 'slackdevops'
                  }
              }
              
         }
         
-        stage ('ProdBuild') {
+      //  stage ('ProdBuild') {
             
-            steps {
+        //    steps {
                 
-                    sh 'mvn clean install -f Acceptancetest/pom.xml'
+          //          sh 'mvn clean install -f Acceptancetest/pom.xml'
             
-                 }
-        }
+            //     }
+        //}
     
     stage('SanityTest'){
         steps{
+            sh 'mvn clean install -f Acceptancetest/pom.xml'
             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\Acceptancetest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
         }
     }
         
-        stage ('SlackNotificationProd') {
+       // stage ('SlackNotificationProd') {
             
-            steps {
+         //   steps {
                 
-                slackSend channel: 'alerts', message: 'Prod Deployment Success', teamDomain: 'friends-dover', tokenCredentialId: 'slackdevops'
+           //     slackSend channel: 'alerts', message: 'Prod Deployment Success', teamDomain: 'friends-dover', tokenCredentialId: 'slackdevops'
                     
-             }
-        }
+             //}
+       // }
         
        
         
