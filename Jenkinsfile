@@ -55,6 +55,13 @@ pipeline {
                     
                   deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://35.192.223.169:8080')], contextPath: 'QAWebapp', war: '**/*.war'
             }
+            
+             post {
+                 always {
+                     jiraSendDeploymentInfo environmentId: 'Test', environmentName: 'Test Environement', environmentType: 'Test', serviceIds: ['http://35.192.223.169:8080/QAWebapp'], site: 'tcs-devops-case-study.atlassian.net', state: 'successful'
+                    jiraComment body: 'Test Deployment Successful', issueKey: 'DC-1'
+                 }
+             }
         }
         
         stage ('SlackNotificationTest') {
@@ -143,6 +150,14 @@ pipeline {
                     
                     deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://34.122.114.228:8080')], contextPath: 'ProdWebapp', war: '**/*.war'
             }
+             
+              post {
+                 always {
+                     jiraSendDeploymentInfo environmentId: 'Prod', environmentName: 'prod', environmentType: 'production', serviceIds: ['http://34.122.114.228:8080/ProdWebapp'], site: 'tcs-devops-case-study.atlassian.net', state: 'successful'
+                    jiraComment body: 'Production Deployment Successful', issueKey: 'DC-1'
+                 }
+             }
+             
         }
         
         stage ('ProdBuild') {
