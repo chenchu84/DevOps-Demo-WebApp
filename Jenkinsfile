@@ -40,15 +40,7 @@ pipeline {
             
             }
             
-            }
-        
-         //stage ('JiraNotification') {
-            
-           // steps {
-             //      jiraComment body: 'Build is Success', issueKey: 'DC-1'
-            //}
-            //}
-        
+            }       
         
         stage ('DeployTest') {
             
@@ -65,24 +57,8 @@ pipeline {
                  }
              }
         }
-        
-       // stage ('SlackNotificationTest') {
-            
-         //   steps {
                 
-           //     slackSend channel: 'alerts', message: 'Test Deployment Success', teamDomain: 'friends-dover', tokenCredentialId: 'slackdevops'
-                    
-            // }
-       // }
-        
-        //stage ('ArtifactoryBuild') {
-            
-          //  steps {
-          //          sh 'mvn package'
-           // }
-       // }
-        
-        stage ('jFrogserver') {
+        stage ('Artifactory') {
             
             steps {
                 
@@ -98,41 +74,23 @@ pipeline {
                         // The default value (if not configured) is 300 seconds:
                         timeout: 300
                 )
-                    
-             }
-        }
-            
-            stage ('jFrogserverupload') {
-            
-            steps {
                 
                 rtUpload (
-    serverId: 'artifactory',
-    spec: '''{
-          "files": [
-            {
-              "pattern": "**/*.war",
-              "target": "jenkins/WEBPOC/AVNCommunication/1.0/"
-            }
-         ]
-    }''',
+                serverId: 'artifactory',
+                spec: '''{
+                "files": [
+                    {
+                    "pattern": "**/*.war", "target": "jenkins/WEBPOC/AVNCommunication/1.0/"
+                    }
+                        ]
+                     }''',
                     buildName: 'descriptivepipeline1',
-                    buildNumber: '50'
- 
-   )
-                    
+                    buildNumber: '50')
+                
              }
         }
-     
-      //   stage ('testbuild') {
             
-        //    steps {
-                
-          //          sh 'mvn test -f functionaltest/pom.xml'
-            
-            //     }
-        //}
-    
+               
     stage('UnitTest'){
         steps{
             sh 'mvn test -f functionaltest/pom.xml'
@@ -163,34 +121,14 @@ pipeline {
              }
              
         }
-        
-      //  stage ('ProdBuild') {
             
-        //    steps {
-                
-          //          sh 'mvn clean install -f Acceptancetest/pom.xml'
-            
-            //     }
-        //}
-    
     stage('SanityTest'){
         steps{
             sh 'mvn clean install -f Acceptancetest/pom.xml'
             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\Acceptancetest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
         }
     }
-        
-       // stage ('SlackNotificationProd') {
-            
-         //   steps {
-                
-           //     slackSend channel: 'alerts', message: 'Prod Deployment Success', teamDomain: 'friends-dover', tokenCredentialId: 'slackdevops'
-                    
-             //}
-       // }
-        
-       
-        
+           
     }
     
 }
