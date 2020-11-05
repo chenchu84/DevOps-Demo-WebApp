@@ -35,18 +35,19 @@ pipeline {
              post {
                  always {
                      jiraSendBuildInfo branch: 'https://tcs-devops-case-study.atlassian.net/browse/DC-1', site: 'tcs-devops-case-study.atlassian.net'
+                      jiraComment body: 'Build is Successfull', issueKey: 'DC-1'
                  }
             
             }
             
             }
         
-         stage ('JiraNotification') {
+         //stage ('JiraNotification') {
             
-            steps {
-                   jiraComment body: 'Build is Success', issueKey: 'DC-1'
-            }
-            }
+           // steps {
+             //      jiraComment body: 'Build is Success', issueKey: 'DC-1'
+            //}
+            //}
         
         
         stage ('DeployTest') {
